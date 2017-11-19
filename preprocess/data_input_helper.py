@@ -81,6 +81,7 @@ def load_data_and_labels(filepath,max_size = -1):
 
     one_hot_labels = []
     x_datas = []
+    datas = []
     for line in train_datas:
         parts = line.split('\t',1)
         if(len(parts[1].strip()) == 0):
@@ -89,15 +90,26 @@ def load_data_and_labels(filepath,max_size = -1):
         x_datas.append(parts[1])
         if parts[0].startswith('0') :
             one_hot_labels.append([1,0])
+            label = 0
         else:
             one_hot_labels.append([0,1])
+            label = 1
+        datas.append([parts[1],label])
+
 
     print (' data size = ' ,len(train_datas))
+
+    np.random.seed(10)
+    shuffle_indices = np.random.permutation(np.arange(len(y)))
+    datas_shuffled = datas[shuffle_indices]
+
+    dev_sample_index = -1 * int(0.1 * float(len(y)))
+    train, dev = datas_shuffled[:dev_sample_index], datas_shuffled[dev_sample_index:]
 
     # Split by words
     # x_text = [clean_str(sent) for sent in x_text]
 
-    return [x_datas, np.array(one_hot_labels)]
+    return train,dev
 
 
 def batch_iter(data, batch_size, num_epochs, shuffle=True):

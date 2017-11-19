@@ -52,17 +52,17 @@ def load_data():
     """Loads starter word-vectors and train/dev/test data."""
     # Load the starter word vectors
     print("Loading data...")
-    x_text, y = data_helpers.load_data_and_labels(FLAGS.train_data_file)
+    train, dev = data_helpers.load_data_and_labels(FLAGS.train_data_file)
     # for x in x_text:
     #     l = len(x.split(" "))
     #     break
 
-    max_document_length = max([len(x.split(" ")) for x in x_text])
-    print ('len(x) = ',len(x_text),' ',len(y))
-    print(' max_document_length = ' , max_document_length)
+    #max_document_length = max([len(x.split(" ")) for x in x_text])
+    #print ('len(x) = ',len(x_text),' ',len(y))
+    #print(' max_document_length = ' , max_document_length)
 
     x = []
-    x = data_helpers.get_text_idx(x_text, word2idx, max_document_length)
+    x_train = data_helpers.get_text_idx(x_text, word2idx, max_document_length)
     vocab_size = len(word2idx)
     print('use w2v .bin')
 
@@ -81,7 +81,7 @@ def load_data():
 def train():
     # Training
     # ==================================================
-    x_train, x_dev, y_train, y_dev ,vocab_size= load_data()
+    #x_train, x_dev, y_train, y_dev ,vocab_size= load_data()
     with tf.Graph().as_default():
         session_conf = tf.ConfigProto(
           allow_soft_placement=FLAGS.allow_soft_placement,
